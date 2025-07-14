@@ -6,6 +6,10 @@ const incomeShema = new mongoose.Schema({
         ref: "User",
         required: true
     },
+    description: {
+        type: String,
+        required: true
+    },
     source: {
         type: String,
         required: true
@@ -17,11 +21,6 @@ const incomeShema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    },
-    type: {
-        type: String,
-        required: true,
-        enum: ['expense', 'income']
     },
 }, {timestamps: true})
 

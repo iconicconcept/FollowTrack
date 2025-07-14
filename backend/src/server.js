@@ -9,14 +9,11 @@ import incomeRoute from "./routes/incomeRoute.js"
 import expenseRoute from "./routes/expenseRoute.js"
 import dashRoute from "./routes/dashboardRoute.js"
 import rateLimiter from "./middleware/rateLimiter.js";
-//import { fileURLToPath } from "url";
 
 dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 8000
 const __dirname = path.resolve();
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = path.dirname(__filename);
 
 //if(process.env.NODE_ENV !== "production"){
     app.use(cors({
@@ -31,7 +28,7 @@ const __dirname = path.resolve();
 app.use(express.json());
 
 app.use(rateLimiter)
-app.use("/api/auth", authRoute)
+app.use("/api/auth", authMiddleware, authRoute)
 app.use("/api/income", authMiddleware, incomeRoute)
 app.use("/api/expense", authMiddleware, expenseRoute)
 app.use("/api/dashboard", authMiddleware, dashRoute)

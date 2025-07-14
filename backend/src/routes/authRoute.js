@@ -23,7 +23,7 @@ router.post("/register", async (req, res)=>{
                 email: user.email,
                 isAdmin: user.isAdmin || false
             };
-            const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, { expiresIn: "24h" });
+            const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: "24h" });
             res.status(200).json({ token})
         }
         
@@ -48,7 +48,7 @@ router.post("/login", async (req, res)=>{
            isAdmin: user.isAdmin || false
        };
 
-       const token = jwt.sign(payload, process.env.JWT_SECRET_KEY, {expiresIn: "24h"})
+       const token = jwt.sign(payload, process.env.JWT_SECRET, {expiresIn: "24h"})
        res.status(200).json({token})
     } catch (err) {
        console.error("error logging in", err.message);

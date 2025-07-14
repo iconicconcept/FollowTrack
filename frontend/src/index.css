@@ -21,6 +21,14 @@
   }
 }
 
+.card{
+  @apply bg-white p-6 rounded-2xl shadow-md shadow-gray-100 border border-gray-200/55 
+}
+
+.card-btn{
+  @apply flex items-center gap-2 text-sm font-medium text-gray-700 hover:text-green-500 bg-green-50 px-4 py-1.5 rounded-lg border border-gray-200/50 cursor-pointer;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

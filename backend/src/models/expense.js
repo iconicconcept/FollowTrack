@@ -22,11 +22,6 @@ const expenseShema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
-    type: {
-        type: String,
-        required: true,
-        enum: ['expense', 'income']
-    },
 },{timestamps: true})
 
 const Expense = mongoose.model("Expense", expenseShema)

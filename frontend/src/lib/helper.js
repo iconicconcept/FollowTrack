@@ -12,6 +12,7 @@ export const getInitials = (name)=>{
 }
 
 export const addThousandsSeparator = (num)=>{
+    console.log(num);
 if(num === null || isNaN(num)) return "";
 
 const [integerPart, fractionalPart] = num.toString().split(".")

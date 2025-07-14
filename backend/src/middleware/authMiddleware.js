@@ -11,7 +11,7 @@ const authMiddleware = async (req, res, next) => {
 
     try {
         // 3. Verify the token using your JWT_SECRET
-        const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
         // 4. Find the user from the database using the ID from the token.
         const user = await User.findById(decoded.id).select("-password");
@@ -21,7 +21,8 @@ const authMiddleware = async (req, res, next) => {
             return res.status(401).json({ message: 'Authentication invalid: User not found.' });
         }
 
-        req.user = user; 
+        req.user = user;
+        //console.log("authMiddleware: req.user", user); 
         
         // 5. Pass control to the next middleware or route handler
         next();
