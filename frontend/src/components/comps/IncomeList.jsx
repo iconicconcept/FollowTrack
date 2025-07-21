@@ -3,27 +3,26 @@ import { LuDownload } from 'react-icons/lu'
 import TransactionCard from './TransactionCard'
 import moment from 'moment'
 
-const IncomeList = ({ transactions, onDelete, onDownload }) => {
+const IncomeList = ({ transactions, onDelete }) => {
   return (
     <div className='card'>
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-start'>
             <h5>Income Sources</h5>
 
-            <button className='card-btn' onClick={onDownload}>
+            {/* <button className='card-btn' onClick={onDownload}>
                 <LuDownload className='text-base' /> DownLoad
-            </button>
+            </button> */}
         </div>
 
 
-        {transactions === 0 && ( 
-            <div className='flex items-center justify-center text-sm text-gray-800 bg-gray-100/50 border border-gray-100 gap-4 mt-2 p-3 rounded-lg'>
-            Add your first Income Transaction to get started
+        {transactions.length === 0 && ( 
+            <div className='flex items-center justify-center text-sm text-gray-900 bg-gray-100 border border-gray-100 gap-4 mt-2 p-3 rounded-lg'>
+                Add your first Income Transaction to get started
             </div> )
         }
 
-        {transactions > 0 && (
             <div className='grid grid-cols-1 md:grid-cols-2'>
-                {transactions?.map((income) => {
+                {transactions?.map((income) => (
                     <TransactionCard
                         key={income._id}
                         title={income.source}
@@ -32,9 +31,8 @@ const IncomeList = ({ transactions, onDelete, onDownload }) => {
                         type='income'
                         onDelete={()=> onDelete(income._id)}
                     />
-                })}
+                ))}
             </div>
-        )}
     </div>
   )
 }

@@ -3,26 +3,25 @@ import { LuDownload } from 'react-icons/lu'
 import TransactionCard from './TransactionCard'
 import moment from 'moment'
 
-const ExpenseList = ({ transactions, onDelete, onDownload }) => {
+const ExpenseList = ({ transactions, onDelete }) => {
   return (
     <div className='card'>
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center justify-start'>
           <h5>All Expense Transactions</h5>
 
-          <button className='card-btn' onClick={onDownload}>
+          {/* <button className='card-btn' onClick={onDownload}>
               <LuDownload className='text-base' /> DownLoad
-          </button>
+          </button> */}
       </div>
       
-      {transactions === 0 && ( 
-        <div className='flex items-center justify-center text-sm text-gray-800 bg-gray-100/50 border border-gray-100 gap-4 mt-2 p-3 rounded-lg'>
+      {transactions?.length === 0 && ( 
+        <div className='flex items-center justify-center text-sm text-gray-900 bg-gray-100 border border-gray-100 gap-4 mt-2 p-3 rounded-lg'>
           Add your first Expense Transaction to get started
         </div> )
       }
 
-      {transactions > 0 && (
         <div className='grid grid-cols-1 md:grid-cols-2'>
-          {transactions.map((expense) => {
+          {transactions.map((expense) => (
               <TransactionCard
                   key={expense._id}
                   title={expense.category}
@@ -31,9 +30,8 @@ const ExpenseList = ({ transactions, onDelete, onDownload }) => {
                   type='expense'
                   onDelete={()=> onDelete(expense._id)}
               />
-          })}
+          ))}
         </div>
-      )}
   </div>
   )
 }

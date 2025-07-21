@@ -35,7 +35,7 @@ const CustomLinechart = ({data}) => {
                 <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#555" }} stroke='none' />
                 <YAxis tick={{ fontSize: 11, fill: "#555" }} stroke='none' />
 
-                <Tooltip content={<CustomToolTip  />} />
+                <Tooltip content={CustomToolTip} />
 
                 <Area
                     type='monotone'

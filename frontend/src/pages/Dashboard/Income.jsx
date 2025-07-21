@@ -16,6 +16,7 @@ const Income = () => {
   useUserAuth();  //used to fetch user data, like the image and name
   const [loading, setLoading] = useState(false)
   const [incomeData, setIncomeData] = useState([])
+  const [last30DaysIncomes, setLast30DaysIncomes] = useState([])
   const [openDeleteAlert, setOpenDeleteAlert] = useState({
     show: false,
     data: null
@@ -40,6 +41,24 @@ const Income = () => {
           setLoading(false)
         }
   }
+
+  const handleLast30DaysIncomes = async () => {
+    if(loading) return;
+        setLoading(true)
+    
+        try{
+          const response = await axiosInstance.get("/income/last30DaysIncomes")
+    
+          if(response.data){
+            setLast30DaysIncomes(response.data.last30DaysIncomes)
+          }
+        } catch (error){
+          console.error("Failed to fetch last 30 days income data:", error);
+          toast.error("Fail to fetch last 30 days income data, refresh or try again later")
+        } finally{
+          setLoading(false)
+        }
+    }
 
   //Add Income
   const handleAddIncome = async (income) =>{
@@ -69,6 +88,7 @@ const Income = () => {
       setOpenAddIncomeModal(false)
       toast.success("Income added successfully")
       fetchIncomeTransactions()
+      handleLast30DaysIncomes();
 
     } catch (error) {
       console.error("Failed to add income data:", error);
@@ -91,29 +111,30 @@ const Income = () => {
   }
   
   //Download Income Transactions
-  const handleDownloadIncome = async () =>{ 
-    try {
-      const response = await axiosInstance.get("/income/downloadexcel",
-        {responseType: 'blob',}
-      );
+  // const handleDownloadIncome = async () =>{ 
+  //   try {
+  //     const response = await axiosInstance.get("/income/downloadexcel",
+  //       {responseType: 'blob',}
+  //     );
 
-      //create a url for the blob
-      const url = window.URL.createObjectURL(new Blob([response.data]))
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'income_details.xlsx');
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link)
-      window.URL.revokeObjectURL(url)
-    } catch (error) {
-      console.error("Failed to download Income data:", error);
-      toast.error("Fail to download Income transaction, retry")
-    } 
-  }
+  //     //create a url for the blob
+  //     const url = window.URL.createObjectURL(new Blob([response.data]))
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.setAttribute('download', 'income_details.xlsx');
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     link.parentNode.removeChild(link)
+  //     window.URL.revokeObjectURL(url)
+  //   } catch (error) {
+  //     console.error("Failed to download Income data:", error);
+  //     toast.error("Fail to download Income transaction, retry")
+  //   } 
+  // }
   
   useEffect(()=>{
     fetchIncomeTransactions();
+    handleLast30DaysIncomes();
     //return ()=>{}
   }, [])
 
@@ -133,14 +154,14 @@ const Income = () => {
 
           {/* last 30 days income */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
-            <IncomeTransaction 
-              transactions = {incomeData?.last30DaysIncome?.transactions || []}
-              onDelete={(id)=> setOpenDeleteAlert({ show:true, data:id })}
-              onDownload= {handleDownloadIncome}
-            />
-
             <Last30DaysIncomeChart
-              data={incomeData?.last30DaysIncome?.transactions || []}
+              data={last30DaysIncomes?.transactions || []}
+            />
+            
+            <IncomeTransaction 
+              transactions = {last30DaysIncomes?.transactions || []}
+              onDelete={(id)=> setOpenDeleteAlert({ show:true, data:id })}
+              //onDownload= {handleDownloadIncome}
             />  
           </div>
 
@@ -148,7 +169,7 @@ const Income = () => {
           <IncomeList
             transactions={incomeData}
             onDelete={(id)=> setOpenDeleteAlert({ show:true, data:id })}
-            onDownload= {handleDownloadIncome}
+            //onDownload= {handleDownloadIncome}
           />
         </div>
 

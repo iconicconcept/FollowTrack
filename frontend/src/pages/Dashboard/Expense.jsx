@@ -17,6 +17,7 @@ const Expense = () => {
 
   const [loading, setLoading] = useState(false)
   const [expenseData, setExpenseData] = useState([])
+  const [last30DaysExpenses, setLast30DaysExpenses] = useState([])  //Expenses for last 30 days
   const [openDeleteAlert, setOpenDeleteAlert] = useState({
     show: false,
     data: null
@@ -31,13 +32,29 @@ const Expense = () => {
         try{
           const response = await axiosInstance.get("/expense/getExpense")
     
-          if(response.data){
-            setExpenseData(response.data)
-          }
+          setExpenseData(response.data || []);
           toast.success("Welcome")
         } catch (error){
           console.error("Failed to fetch expense data:", error);
           toast.error("Fail to fetch expense data, refresh or try again later")
+        } finally{
+          setLoading(false)
+        }
+  }
+
+  const handleLast30DaysExpenses = async () => {
+    if(loading) return;
+        setLoading(true)
+    
+        try{
+          const response = await axiosInstance.get("/expense/last30DaysExpenses")
+    
+          if(response.data){
+            setLast30DaysExpenses(response.data.last30DaysExpenses)
+          } 
+        } catch (error){
+          console.error("Failed to fetch last 30 days expense data:", error);
+          toast.error("Fail to fetch last 30 days expense data, refresh or try again later")
         } finally{
           setLoading(false)
         }
@@ -74,6 +91,7 @@ const Expense = () => {
       setOpenAddExpenseModal(false)
       toast.success("Expense added successfully")
       fetchExpenseTransactions()
+      handleLast30DaysExpenses()
 
     } catch (error) {
       console.error("Failed to add Expense data:", error);
@@ -90,45 +108,46 @@ const Expense = () => {
       toast.success("Expense detail deleted successfully")
       fetchExpenseTransactions();
     }  catch(error){
-      console.error("Failed to add Expense data:", error);
-      toast.error("Fail to add Expense transaction, retry")
+      console.error("Failed to delete Expense data:", error);
+      toast.error("Fail to delete Expense transaction, retry")
     }
   }
   
   //Download Expense Transactions
-  const handleDownloadExpense = async () =>{  
-    try {
-      const response = await axiosInstance.get("/expense/downloadExcelExpense",
-        {responseType: 'blob',}
-      );
+  // const handleDownloadExpense = async () =>{  
+  //   try {
+  //     const response = await axiosInstance.get("/expense/downloadExcelExpense",
+  //       {responseType: 'blob',}
+  //     );
 
-      //create a url for the blob
-      const url = window.URL.createObjectURL(new Blob([response.data]))
-      const link = document.createElement('a');
-      link.href = url;
-      link.setAttribute('download', 'expense_details.xlsx');
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link)
-      window.URL.revokeObjectURL(url)
-    } catch (error) {
-      console.error("Failed to download Expense data:", error);
-      toast.error("Fail to download Expense transaction, retry")
-    }
-  }
+  //     //create a url for the blob
+  //     const url = window.URL.createObjectURL(new Blob([response.data]))
+  //     const link = document.createElement('a');
+  //     link.href = url;
+  //     link.setAttribute('download', 'expense_details.xlsx');
+  //     document.body.appendChild(link);
+  //     link.click();
+  //     link.parentNode.removeChild(link)
+  //     window.URL.revokeObjectURL(url)
+  //   } catch (error) {
+  //     console.error("Failed to download Expense data:", error);
+  //     toast.error("Fail to download Expense transaction, retry")
+  //   }
+  // }
 
   useEffect(()=>{
       fetchExpenseTransactions();
+      handleLast30DaysExpenses();
       //return ()=>{}
     }, [])
 
   return (
     <DashboardLayout activeMenu="Expense">
       {loading && <div className="w-full flex justify-center">
-          <div className="text-center text-black z-30 py-10 flex gap-2 font-mono"><LoaderIcon className='animate-spin size-5 text-black'/>Loading income transactions...</div>
+          <div className="text-center text-black z-30 py-10 flex gap-2 font-mono"><LoaderIcon className='animate-spin size-5 text-black'/>Loading expense transactions...</div>
         </div>}
       {!loading &&<div className="my-5 mx-auto">
-        <div className="grid grid-cols-1 gap-5">
+        <div className="grid grid-cols-1 gap-5 overflow-hidden">
           <div className="">
             <ExpenseOverview
               transactions={expenseData}
@@ -139,13 +158,13 @@ const Expense = () => {
           {/* last 30 days expense */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
             <Last30DaysExpensesChart
-              data={expenseData?.last30DaysExpenses?.transactions || []}
+              data={last30DaysExpenses?.transactions || []}
             />  
 
             <ExpenseTransaction
-              transactions = {expenseData?.last30DaysExpenses?.transactions || []}
+              transactions = {last30DaysExpenses?.transactions || []}
               onDelete={(id)=> setOpenDeleteAlert({ show:true, data:id })}
-              onDownload= {handleDownloadExpense}
+              //onDownload= {handleDownloadExpense}
             />
           </div>
 
@@ -153,7 +172,7 @@ const Expense = () => {
             <ExpenseList
               transactions={expenseData}
               onDelete={(id)=> setOpenDeleteAlert({ show:true, data:id })}
-              onDownload= {handleDownloadExpense}
+              //onDownload= {handleDownloadExpense}
             />
         </div>
 

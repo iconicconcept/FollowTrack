@@ -4,26 +4,25 @@ import React from 'react'
 import TransactionCard from './TransactionCard'
 import { LuDownload } from 'react-icons/lu'
 
-const ExpenseTransaction = ({ transactions, onDelete, onDownload }) => {
+const ExpenseTransaction = ({ transactions, onDelete }) => {
   return (
     <div className='card'>
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-start'>
             <h5>Last 30days Expenses</h5>
   
-            <button className='card-btn' onClick={onDownload}>
+            {/* <button className='card-btn' onClick={onDownload}>
                 <LuDownload className='text-base' /> DownLoad
-            </button>
+            </button> */}
         </div>
 
-        {transactions === 0 && ( 
+        {transactions.length === 0 && ( 
           <div className='flex items-center justify-center text-sm text-gray-800 bg-gray-100/50 border border-gray-100 gap-4 mt-2 p-3 rounded-lg'>
             Add your first Expense Transaction to get started
           </div> )
         }
 
-        {transactions > 0 && (
           <div className="mt-5">
-            {transactions.map((expense)=> (
+            {transactions?.map((expense)=> (
               <TransactionCard
                 key={expense._id}
                 title={expense.category}
@@ -34,7 +33,6 @@ const ExpenseTransaction = ({ transactions, onDelete, onDownload }) => {
               />
             ))}
           </div>
-        )}
     </div>
   )
 }

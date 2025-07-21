@@ -17,14 +17,36 @@ export async function getAllIncome (req, res) {
         )
 
         const income = await Income.find({ userId }).sort({date: -1})
-        res.status(200).json({
-            income,
-            last30DaysIncome: {total: last30DaysIncome, transactions: last30DaysIncomeTransactions}
-        })
+        res.status(200).json(income)
    }catch(error){
         console.log("Error fetching Income", error);
         res.status(500).json({message: 'Internal server error'})
    }
+}
+
+export async function getLast30DaysIncome (req, res) {
+    try {
+        const userId = req.user.id
+
+        //get last 30 days income transanctions
+        const last30DaysIncomeTransactions = await Income.find({
+            userId, // userObjectId, 
+            date: {$gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)}
+        }).sort({date: -1})
+
+        //get total income of last 30days
+        const last30DaysIncome = last30DaysIncomeTransactions.reduce(
+            (sum, transaction) => sum + transaction.amount,
+            0
+        )
+
+        res.status(200).json({
+            last30DaysIncome: {total: last30DaysIncome, transactions: last30DaysIncomeTransactions},
+        })
+    } catch (error) {
+        console.log("Error fetching last 30 days income", error);
+        res.status(500).json({message: 'Internal server error'})
+    }
 }
 
 export async function downloadIncomeExcel (req, res) {
@@ -39,11 +61,23 @@ export async function downloadIncomeExcel (req, res) {
             Date: item.date
         }))
 
-        const wb = xlsx.utils.book_new();
-        const ws = xlsx.utils.json_to_sheet(data);
-        xlsx.utils.book_append_sheet(wb, ws, "Income")
-        xlsx.writeFile(wb, "income_details.xlsx");
-        res.downoload('Income_details.xlsx')
+        // const wb = xlsx.utils.book_new();
+        // const ws = xlsx.utils.json_to_sheet(data);
+        // xlsx.utils.book_append_sheet(wb, ws, "Income")
+        // xlsx.writeFile(wb, "income_details.xlsx");
+        // res.download('Income_details.xlsx')
+        const buffer = xlsx.write(xlsx.utils.book_new(), {
+            Sheets: { Expense: xlsx.utils.json_to_sheet(data) },
+            bookType: "xlsx",
+            });
+
+            // Send the buffer as a file
+            res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=income_details.xlsx"
+            );
+            res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            res.send(buffer);
     } catch(error){
         console.log("Error downloading Income to excel", error);
         res.status(500).json({message: 'Internal server error'})

@@ -14,7 +14,7 @@ const IncomeOverview = ({ transactions, onAddIncome }) => {
       setError(null);
     } catch (err) {
       console.error("Error preparing income chart data:", err);
-      setError("Error loading chart data."); // Provide a user-friendly message
+      setError("Error loading chart data.");
       setChartData([]);
     }
     return () => {};

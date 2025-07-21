@@ -25,6 +25,7 @@ return fractionalPart ? `${formattedInteger}.${fractionalPart}` : formattedInteg
 
 
 export const prepareExpenseChartData = (data = []) =>{
+    if(!Array.isArray(data)) return [];
     const chartData = data.map((item)=> ({
         category: item?.category,
         amount: item?.amount,
@@ -35,6 +36,7 @@ export const prepareExpenseChartData = (data = []) =>{
 }
 
 export const prepareIncomeBarChartData = (data = []) => {
+    if(!Array.isArray(data)) return [];
     const sortData = [...data].sort((a,b) => new Date(a.date) - new Date(b.date))
     const chartData = sortData.map((item) => ({
         month: moment(item?.date).format('DD MM'),
@@ -46,6 +48,7 @@ export const prepareIncomeBarChartData = (data = []) => {
 } 
 
 export const prepareExpenseLineChartData = (data = []) => {
+    if(!Array.isArray(data)) return [];
     const sortData = [...data].sort((a,b) => new Date(a.date) - new Date(b.date))
     const chartData = sortData.map((item) => ({
         month: moment(item?.date).format('DD MM'),

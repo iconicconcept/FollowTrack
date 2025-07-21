@@ -5,6 +5,19 @@ export async function getAllExpense (req, res) {
    const userId = req.user.id
 
    try{
+        const expense = await Expense.find({ userId }).sort({date: -1})
+
+        res.status(200).json(expense)
+   }catch(error){
+        console.log("Error fetching expense", error);
+        res.status(500).json({message: 'Internal server error'})
+   }
+}
+
+export async function getLast30DaysExpenses(req, res) {
+    try{
+        const userId = req.user.id
+
        //get 30 days expense transactions
         const last30DaysExpenseTransactions = await Expense.find({
             userId, //userObjectId, 
@@ -17,16 +30,13 @@ export async function getAllExpense (req, res) {
             0
         )
 
-        const expense = await Expense.find({ userId }).sort({date: -1})
-
         res.status(200).json({
-            expense,
             last30DaysExpenses: {total: last30DaysExpenses, transactions: last30DaysExpenseTransactions}
         })
-   }catch(error){
-        console.log("Error fetching expense", error);
+    } catch(error){
+        console.log("Error fetching last 30 days expense", error);
         res.status(500).json({message: 'Internal server error'})
-   }
+    }
 }
 
 export async function downloadExpenseExcel (req, res) {
@@ -36,20 +46,34 @@ export async function downloadExpenseExcel (req, res) {
 
         //prepare data for excel
         const data = expense.map((item)=>({
-            Source: item.source,
+            Category: item.category,
             Amount: item.amount,
             Date: item.date
         }))
 
-        const wb = xlsx.utils.book_new();
-        const ws = xlsx.utils.json_to_sheet(data);
-        xlsx.utils.book_append_sheet(wb, ws, "Expense")
-        xlsx.writeFile(wb, "Expense_details.xlsx");
-        res.downoload('Expense_details.xlsx')
-    } catch(error){
-        console.log("Error downloading Expense to excel", error);
-        res.status(500).json({message: 'Internal server error'})
-    }
+        // const wb = xlsx.utils.book_new();
+        // const ws = xlsx.utils.json_to_sheet(data);
+        // xlsx.utils.book_append_sheet(wb, ws, "Expense")
+        // xlsx.writeFile(wb, "Expense_details.xlsx");
+        // res.download('Expense_details.xlsx')
+
+        // Create a buffer instead of writing to a file
+        const buffer = xlsx.write(xlsx.utils.book_new(), {
+            Sheets: { Expense: xlsx.utils.json_to_sheet(data) },
+            bookType: "xlsx",
+            });
+
+            // Send the buffer as a file
+            res.setHeader(
+            "Content-Disposition",
+            "attachment; filename=expense_details.xlsx"
+            );
+            res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+            res.send(buffer);
+        } catch(error){
+            console.log("Error downloading Expense to excel", error);
+            res.status(500).json({message: 'Internal server error'})
+        }
 }
 
 export async function addExpense (req, res) {

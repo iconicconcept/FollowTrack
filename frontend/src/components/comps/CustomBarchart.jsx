@@ -36,12 +36,12 @@ const CustomBarchart = ({ data }) => {
 
                 <Bar
                     dataKey="amount"
-                    fill='#006400'
+                    fill='#22c55e'
                     radius={[10, 10, 0, 0]}
-                    activeDot={{ r: 8, fill: "yellow" }}
-                    activeStyle={{ fill: "green" }}
+                    activeDot={{ r: 6, fill: "#fff" }}
+                    activeStyle={{ fill: "#16a34a" }}
                 >
-                    {data.map((entry, index)=> (
+                    {data.map((entry, index) => (
                         <Cell key={index} fill={getColor(index)}/>
                     ))}
                 </Bar>
