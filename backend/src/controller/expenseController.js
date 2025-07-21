@@ -3,9 +3,26 @@ import xlsx from "xlsx"
 
 export async function getAllExpense (req, res) {
    const userId = req.user.id
+
    try{
+       //get 30 days expense transactions
+        const last30DaysExpenseTransactions = await Expense.find({
+            userId, //userObjectId, 
+            date: {$gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)}
+        }).sort({date: -1})
+    
+        //get total expense of last 30days
+        const last30DaysExpenses = last30DaysExpenseTransactions.reduce(
+            (sum, transaction) => sum + transaction.amount,
+            0
+        )
+
         const expense = await Expense.find({ userId }).sort({date: -1})
-        res.status(200).json(expense)
+
+        res.status(200).json({
+            expense,
+            last30DaysExpenses: {total: last30DaysExpenses, transactions: last30DaysExpenseTransactions}
+        })
    }catch(error){
         console.log("Error fetching expense", error);
         res.status(500).json({message: 'Internal server error'})

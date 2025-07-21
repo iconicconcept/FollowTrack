@@ -21,30 +21,30 @@ export async function getDashboardData (req, res) {
         ])
         console.log("totalExpense", {totalExpense, userId: isValidObjectId(userId)})
 
-        //get last 30 days income transanctions
-        const last30DaysIncomeTransactions = await Income.find({
-            userId, // userObjectId, 
-            date: {$gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)}
-        }).sort({date: -1})
+        // //get last 30 days income transanctions
+        // const last30DaysIncomeTransactions = await Income.find({
+        //     userId, // userObjectId, 
+        //     date: {$gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)}
+        // }).sort({date: -1})
 
-        //get total income of last 60days
-        const last30DaysIncome = last30DaysIncomeTransactions.reduce(
-            (sum, transaction) => sum + transaction.amount,
-            0
-        )
+        // //get total income of last 30days
+        // const last30DaysIncome = last30DaysIncomeTransactions.reduce(
+        //     (sum, transaction) => sum + transaction.amount,
+        //     0
+        // )
 
 
-        //get 30 days expense transactions
-        const last30DaysExpenseTransactions = await Expense.find({
-            userId, //userObjectId, 
-            date: {$gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)}
-        }).sort({date: -1})
+        // //get 30 days expense transactions
+        // const last30DaysExpenseTransactions = await Expense.find({
+        //     userId, //userObjectId, 
+        //     date: {$gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)}
+        // }).sort({date: -1})
 
-        //get total expense of last 30days
-        const last30DaysExpenses = last30DaysExpenseTransactions.reduce(
-            (sum, transaction) => sum + transaction.amount,
-            0
-        )
+        // //get total expense of last 30days
+        // const last30DaysExpenses = last30DaysExpenseTransactions.reduce(
+        //     (sum, transaction) => sum + transaction.amount,
+        //     0
+        // )
 
         //get 5 last transactions
         const recentTransactions = [
@@ -68,8 +68,8 @@ export async function getDashboardData (req, res) {
                 totalBalance: (totalIncome[0]?.total || 0) - (totalExpense[0]?.total || 0),
                 totalIncome: totalIncome[0]?.total || 0,
                 totalExpenses: totalExpense[0]?.total || 0,
-                last30DaysExpenses: {total: last30DaysExpenses, transactions: last30DaysExpenseTransactions},
-                last30DaysIncome: {total: last30DaysIncome, transactions: last30DaysIncomeTransactions},
+                //last30DaysExpenses: {total: last30DaysExpenses, transactions: last30DaysExpenseTransactions},
+                //last30DaysIncome: {total: last30DaysIncome, transactions: last30DaysIncomeTransactions},
                 recentTransactions: recentTransactions,
             }
         );

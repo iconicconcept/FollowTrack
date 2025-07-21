@@ -65,6 +65,8 @@ const Expense = () => {
     }
 
     try {
+      //const date = new Date(date).toISOString().split("T")[0];
+
       await axiosInstance.post("/expense/addExpense", {
         category, amount, date
       })

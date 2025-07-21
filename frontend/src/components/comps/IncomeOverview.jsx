@@ -5,13 +5,20 @@ import { PlusIcon } from 'lucide-react'
 
 const IncomeOverview = ({ transactions, onAddIncome }) => {
     const [chartData, setChartData] = useState([])
+    const [error, setError] = useState(null);
 
-    useEffect(()=> {
-        const result = prepareIncomeBarChartData(transactions)
-        setChartData(result)
-
-        return ()=>{}
-    }, [transactions])
+    useEffect(() => {
+    try {
+      const result = prepareIncomeBarChartData(transactions);
+      setChartData(result);
+      setError(null);
+    } catch (err) {
+      console.error("Error preparing income chart data:", err);
+      setError("Error loading chart data."); // Provide a user-friendly message
+      setChartData([]);
+    }
+    return () => {};
+  }, [transactions]);
 
   return (
     <div className='card'>
@@ -28,9 +35,9 @@ const IncomeOverview = ({ transactions, onAddIncome }) => {
         </div>
 
         <div className='mt-9'>
-            <CustomBarchart
+            {error? <p className="text-red-500">{error}</p> : <CustomBarchart
                 data={chartData}
-            />
+            /> }
         </div>
     </div>
   )

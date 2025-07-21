@@ -4,8 +4,23 @@ import xlsx from "xlsx"
 export async function getAllIncome (req, res) {
    const userId = req.user.id
    try{
+        //get last 30 days income transanctions
+        const last30DaysIncomeTransactions = await Income.find({
+            userId, // userObjectId, 
+            date: {$gte: new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)}
+        }).sort({date: -1})
+
+        //get total income of last 60days
+        const last30DaysIncome = last30DaysIncomeTransactions.reduce(
+            (sum, transaction) => sum + transaction.amount,
+            0
+        )
+
         const income = await Income.find({ userId }).sort({date: -1})
-        res.status(200).json(income)
+        res.status(200).json({
+            income,
+            last30DaysIncome: {total: last30DaysIncome, transactions: last30DaysIncomeTransactions}
+        })
    }catch(error){
         console.log("Error fetching Income", error);
         res.status(500).json({message: 'Internal server error'})
@@ -36,7 +51,7 @@ export async function downloadIncomeExcel (req, res) {
 }
 
 export async function addIncome (req, res) {
-    const userId = req.user.deleteIncome
+    const userId = req.user.id
     try{
         const {source, amount, date} = req.body
         if(!source || !amount || !date){

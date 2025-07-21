@@ -39,11 +39,12 @@ const AddIncomeForm = ({ onAddIncome }) => {
             <Label htmlFor="date" className='ml-2'>Date</Label>
             <Input
                 id='date'
+                className='cursor-pointer'
                 value={income.date}
                 onChange={({target})=>handleChange("date", target.value)}
                 label='date'
                 placeholder='DD-MM-YYYY'
-                type="text"
+                type="date"
             />
         </div>
 

@@ -31,9 +31,7 @@ const Income = () => {
         try{
           const response = await axiosInstance.get("/income/get")
     
-          if(response.data){
-            setIncomeData(response.data)
-          }
+          setIncomeData(response.data || [])
           toast.success("Welcome")
         } catch (error){
           console.error("Failed to fetch income data:", error);

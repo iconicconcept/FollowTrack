@@ -42,9 +42,10 @@ const AddExpenseForm = ({ onAddExpense }) => {
                   id='date'
                   value={expense.date}
                   onChange={({target})=>handleChange("date", target.value)}
+                  className='cursor-pointer'
                   label='date'
                   placeholder='DD-MM-YYYY'
-                  type="text"
+                  type="date"
               />
           </div>
   

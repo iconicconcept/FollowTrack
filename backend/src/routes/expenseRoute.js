@@ -3,7 +3,7 @@ import {getAllExpense, downloadExpenseExcel, addExpense, deleteExpense} from "..
 
 const router = express.Router()
 
-router.get("/getExpense",getAllExpense )
+router.get("/getExpense", getAllExpense )
 router.get("/downloadExcelExpense", downloadExpenseExcel)
 router.post("/addExpense", addExpense)
 router.delete("/:id", deleteExpense)
