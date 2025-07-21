@@ -9,15 +9,17 @@ const DashboardLayout = ({children, activeMenu})=>{
         <div className="">
             <Navbar activeMenu={activeMenu} />
 
-            {user && (
-                <div className="flex">
-                    <div className="max-[1000px]:hidden">
-                        <Sidebar activeMenu={activeMenu}/>
+            <div className="mt-16"> {/* This wrapper pushes the entire content area down */}
+                {user && (
+                    <div className="flex">
+                        <div className="max-[1000px]:hidden">
+                            <Sidebar activeMenu={activeMenu}/>
+                        </div>
+ 
+                        <div className="grow mx-5 max-w-[1000px]">{children}</div>
                     </div>
-
-                    <div className="grow mx-5">{children}</div>
-                </div>
-            )}
+                )}
+            </div>
         </div>
     )
 }

@@ -36,13 +36,13 @@ export async function downloadExpenseExcel (req, res) {
 }
 
 export async function addExpense (req, res) {
-    const userId = req.user.deleteIncome
+    const userId = req.user.id
     try{
-        const {category, description, amount, date} = req.body
+        const {category, amount, date} = req.body
         if(!category || !amount || !date){
             return res.status(400).json({message: "All fields are required"})
         }
-        const newIncome = new Expense({userId, description, category, amount, date: new Date(date)})
+        const newIncome = new Expense({userId, category, amount, date: new Date(date)})
 
         const savedIncome = await newIncome.save();
         res.status(200).json(savedIncome)

@@ -92,7 +92,7 @@ const Register = () => {
 
         const {token, user} = response.data
       if(token){
-        localStorage.setItem("token", token)
+        localStorage.setItem("authToken", token)
         updateUser(user)
         toast.success("Account created successfully!")
         navigate("/dashboard")

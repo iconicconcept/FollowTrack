@@ -10,8 +10,13 @@ import BalanceCard from "@/components/comps/BalanceCard";
 import { addThousandsSeparator } from "@/lib/helper";
 import RecentTransaction from "@/components/comps/RecentTransaction";
 import TransactionOverview from "@/components/comps/TransactionOverview";
+import ExpenseTransaction from "@/components/comps/ExpenseTransaction";
+import Last30DaysExpensesChart from "@/components/comps/Last30DaysExpensesChart";
+import IncomeTransaction from "@/components/comps/IncomeTransaction";
+import Last30DaysIncomeChart from "@/components/comps/Last30DaysIncomeChart";
+
 const Home = () => {
-  useUserAuth();
+  useUserAuth();  //used to fetch user data, like the image and name
   const [dashboardData, setDashboardData] = useState(null)
   const [loading, setLoading] = useState(false)
   const navigate = useNavigate()
@@ -40,19 +45,12 @@ const Home = () => {
   }, [])
 
 
-  if (loading) {
-    return (
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <h2></h2>
-      </div>
-    );
-  }
   return (
     <DashboardLayout activeMenu="Dashboard">
-        {loading && <div className="w-full flex justify-center">
-            <div className="text-center text-gray-200 py-10 flex gap-2 font-mono"><LoaderIcon className='animate-spin size-5 text-black'/>Loading events...</div>
-          </div>}
-      {!loading &&<div className="my-5 mx-auto">
+      {loading && <div className="w-full flex justify-center">
+          <div className="text-center text-black py-10 flex gap-2 font-mono z-30"><LoaderIcon className='animate-spin size-5 text-black z-30'/>Loading dashboard data...</div>
+        </div>}
+      {!loading && <div className="my-5 mx-auto">
         {/* balance cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
           <BalanceCard 
@@ -78,8 +76,7 @@ const Home = () => {
           
         </div>
 
-        {/* last 30 days income */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-5">
           <RecentTransaction 
             transactions={dashboardData?.recentTransactions}
             onSeeMore={()=> navigate("/expense")}
@@ -90,6 +87,29 @@ const Home = () => {
             totalIncome = {dashboardData?.totalIncome || 0}
             totalExpenses = {dashboardData?.totalExpenses || 0}
           />
+
+
+          {/* last 30 days income $ expenses
+          Expenses
+          <ExpenseTransaction 
+            transactions = {dashboardData?.last30DaysExpenses?.transactions || []}
+            onSeeMore = {()=> navigate("/expense")}
+          />
+
+          <Last30DaysExpensesChart
+            data={dashboardData?.last30DaysExpenses?.transactions || []}
+          />
+
+          Income
+          <IncomeTransaction 
+            transactions = {dashboardData?.last30DaysIncome?.transactions || []}
+            onSeeMore = {()=> navigate("/income")}
+          />
+
+          <Last30DaysIncomeChart
+            data={dashboardData?.last30DaysIncome?.transactions || []}
+          /> */}
+
         </div>
       </div>}
     </DashboardLayout>

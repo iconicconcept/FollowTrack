@@ -28,7 +28,7 @@ const __dirname = path.resolve();
 app.use(express.json());
 
 app.use(rateLimiter)
-app.use("/api/auth", authMiddleware, authRoute)
+app.use("/api/auth", authRoute)
 app.use("/api/income", authMiddleware, incomeRoute)
 app.use("/api/expense", authMiddleware, expenseRoute)
 app.use("/api/dashboard", authMiddleware, dashRoute)

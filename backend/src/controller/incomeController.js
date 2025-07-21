@@ -38,11 +38,11 @@ export async function downloadIncomeExcel (req, res) {
 export async function addIncome (req, res) {
     const userId = req.user.deleteIncome
     try{
-        const {source, description, amount, date} = req.body
-        if(!source || !description || !amount || !date){
+        const {source, amount, date} = req.body
+        if(!source || !amount || !date){
             return res.status(400).json({message: "All fields are required"})
         }
-        const newIncome = new Income({userId, description, source, amount, date: new Date(date)})
+        const newIncome = new Income({userId, source, amount, date: new Date(date)})
 
         const savedIncome = await newIncome.save();
         res.status(200).json(savedIncome)
