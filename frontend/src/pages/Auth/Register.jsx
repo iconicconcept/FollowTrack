@@ -9,7 +9,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import ProfilePhoto from "../../components/comps/ProfilePhoto";
 import { LuEye, LuEyeOff } from "react-icons/lu";
-import { UserContext } from "@/context/userContext";
+import { UserContext } from "@/context/UserContext";
 import uploadImage from "@/utils/uploadImage";
 
 const Register = () => {
