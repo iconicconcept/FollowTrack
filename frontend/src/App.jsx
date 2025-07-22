@@ -3,7 +3,7 @@ import Register from "./pages/Auth/Register"
 import Home from "./pages/Dashboard/Home"
 import Expense from "./pages/Dashboard/Expense"
 import Income from "./pages/Dashboard/Income"
-import UserProvider from "./context/userContext"
+import UserProvider from "./context/UserContext"
 
 
 
