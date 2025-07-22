@@ -1,18 +1,25 @@
 import React, {useState} from 'react'
 import Sidebar from './Sidebar'
 import { Menu, X } from 'lucide-react'
-import { useModal } from '@/context/ModalContext'
+import Modal from './Modal'
+import PageNavigate from './PageNavigate'
+import { useNavigate } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
+
 
 const Navbar = ({ activeMenu }) => {
   const [openSidebar, setOpenSidebar] = useState(false)
-  const { openTransactionModal, isTransactionModalOpen } = useModal();
+  const navigate = useNavigate();
+  const location = useLocation();
+  //const [transactionType, setTransactionType] = useState(null);
   const [openTransactionModal, setOpenTransactionModal] = useState(false)
 
   return (
-    <div className='bg-background border border-b backdrop-blur-[2px] border-gray-300/50 px-7 fixed w-full py-4 flex justify-between items-center top-0 z-30 '>
+    <>
+    <div className='bg-background border border-b backdrop-blur-[2px] border-gray-300/50 px-7 fixed w-full py-4 flex justify-between items-center top-0 z-99 '>
 
       {/* Name and toggle */}
-      <div className='flex gap-4'>
+      <div className='flex gap-2 md:gap-4'>
         <button
           className='block lg:hidden text-black'
           onClick={()=>{setOpenSidebar(!openSidebar)}}
@@ -28,13 +35,21 @@ const Navbar = ({ activeMenu }) => {
       </div>
 
       {/* button to income and expense */}
-      <button className='nav-btn add-btn-fill'
-        onClick={openTransactionModal}
+      {location.pathname==='/dashboard' && <button className='nav-btn add-btn-fill px-2 md:px-4'
+        onClick={()=> setOpenTransactionModal(true)}
       >
          Add Transaction
-      </button>
+      </button>}
 
-      {/* <Modal
+
+      {openSidebar && (
+        <div className="fixed top-16 -ml-4 bg-white">
+          <Sidebar activeMenu={activeMenu}/>
+        </div>
+      )}
+
+    </div>
+      <Modal
         isOpen={openTransactionModal}
         onClose={()=> setOpenTransactionModal(false)}
         title='Add new Transaction'
@@ -46,15 +61,8 @@ const Navbar = ({ activeMenu }) => {
             setOpenTransactionModal(false);
           }}
         />
-      </Modal> */}
-
-
-      {openSidebar && (
-        <div className="fixed top-16 -ml-4 bg-white">
-          <Sidebar activeMenu={activeMenu}/>
-        </div>
-      )}
-    </div>
+      </Modal>
+      </>
   )
 }
 

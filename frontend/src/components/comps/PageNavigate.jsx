@@ -21,7 +21,7 @@ const PageNavigate = ({ content, navigate }) => {
                 <button
                     type='button'
                     className='expense-nav-btn'
-                    onClick={() => navigate('/expense')}
+                    onClick={() => navigate('expense')}
                 >
                     Expense
                 </button>

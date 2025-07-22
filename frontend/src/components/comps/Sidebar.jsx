@@ -21,7 +21,7 @@ const Sidebar = ({ activeMenu }) => {
   const handleLogout = ()=>{
     localStorage.clear()
     clearUser();
-    navigate("/login")
+    navigate("/auth")
   }
 
   // const handleLogoutWithOption = (option) => {

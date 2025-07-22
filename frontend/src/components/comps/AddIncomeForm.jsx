@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 
-const AddIncomeForm = ({ onAddIncome }) => {
+const AddIncomeForm = ({ onAddIncome, loading, setLoading }) => {
     const [income, setIncome] = useState({
         source: "",
         amount: "",
@@ -52,9 +52,14 @@ const AddIncomeForm = ({ onAddIncome }) => {
             <button
                 type='button'
                 className='add-btn add-btn-fill'
-                onClick={()=> onAddIncome(income)}
+                disabled={loading}
+                onClick={()=> {
+                        onAddIncome(income)
+                        setLoading(true)
+                    }
+                }
             >
-                Add Income
+                {loading? 'Adding...' : 'Add Income'}
             </button>
         </div>
     </div>

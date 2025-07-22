@@ -16,7 +16,7 @@ const IncomeList = ({ transactions, onDelete }) => {
 
 
         {transactions.length === 0 && ( 
-            <div className='flex items-center justify-center text-sm text-gray-900 bg-gray-100 border border-gray-100 gap-4 mt-2 p-3 rounded-lg'>
+            <div className='flex items-center justify-center text-sm text-gray-700 gap-4 mt-8 p-3 rounded-lg'>
                 Add your first Income Transaction to get started
             </div> )
         }

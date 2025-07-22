@@ -2,7 +2,7 @@ import { ArrowRight } from 'lucide-react'
 import moment from 'moment'
 import React from 'react'
 import TransactionCard from './TransactionCard'
-import { LuDownload } from 'react-icons/lu'
+//import { LuDownload } from 'react-icons/lu'
 
 const IncomeTransaction = ({ transactions, onDelete }) => {
   return (
@@ -17,7 +17,7 @@ const IncomeTransaction = ({ transactions, onDelete }) => {
 
 
         {transactions.length === 0 && (
-          <div className='flex items-center mt-5 justify-center text-sm text-gray-600 bg-gray-100/50 border border-gray-100 gap-4 mt-2 p-3 rounded-lg'>
+          <div className='flex items-center justify-center text-sm text-gray-600 gap-4 px-2 mt-10 rounded-lg'>
             Add your first Income Transaction to get started
           </div> )
         }

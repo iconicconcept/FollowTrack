@@ -10,10 +10,10 @@ import BalanceCard from "@/components/comps/BalanceCard";
 import { addThousandsSeparator } from "@/lib/helper";
 import RecentTransaction from "@/components/comps/RecentTransaction";
 import TransactionOverview from "@/components/comps/TransactionOverview";
-import ExpenseTransaction from "@/components/comps/ExpenseTransaction";
-import Last30DaysExpensesChart from "@/components/comps/Last30DaysExpensesChart";
-import IncomeTransaction from "@/components/comps/IncomeTransaction";
-import Last30DaysIncomeChart from "@/components/comps/Last30DaysIncomeChart";
+// import ExpenseTransaction from "@/components/comps/ExpenseTransaction";
+// import Last30DaysExpensesChart from "@/components/comps/Last30DaysExpensesChart";
+// import IncomeTransaction from "@/components/comps/IncomeTransaction";
+// import Last30DaysIncomeChart from "@/components/comps/Last30DaysIncomeChart";
 
 const Home = () => {
   useUserAuth();  //used to fetch user data, like the image and name
@@ -28,11 +28,10 @@ const Home = () => {
     try{
       const response = await axiosInstance.get("/dashboard/transactions")
 
-      if(response.data){
-        setDashboardData(response.data)
-      }
+      setDashboardData(response.data || null)
       toast.success("Welcome")
-    } catch (error){
+
+      } catch (error){
       console.error("Failed to fetch dashboard data:", error);
       toast.error("Fail to fetch dashboard data, refresh or try again later")
     } finally{
@@ -42,7 +41,7 @@ const Home = () => {
 
   useEffect(()=>{
     fetchDashboardData();
-  }, [])
+  }, [])  
 
 
   return (

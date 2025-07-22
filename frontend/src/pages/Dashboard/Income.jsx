@@ -33,7 +33,6 @@ const Income = () => {
           const response = await axiosInstance.get("/income/get")
     
           setIncomeData(response.data || [])
-          toast.success("Welcome")
         } catch (error){
           console.error("Failed to fetch income data:", error);
           toast.error("Fail to fetch income data, refresh or try again later")
@@ -49,9 +48,8 @@ const Income = () => {
         try{
           const response = await axiosInstance.get("/income/last30DaysIncomes")
     
-          if(response.data){
-            setLast30DaysIncomes(response.data.last30DaysIncomes)
-          }
+          setLast30DaysIncomes(response.data.last30DaysIncomes || [])
+          
         } catch (error){
           console.error("Failed to fetch last 30 days income data:", error);
           toast.error("Fail to fetch last 30 days income data, refresh or try again later")
@@ -99,11 +97,14 @@ const Income = () => {
   //Delete Income
   const handleDeleteIncome = async (id) =>{ 
     try{
-      await axiosInstance.delete(`/income/${id}`)
+      await axiosInstance.delete(`/income/${id}`);
+      setIncomeData(prev => Array.isArray(prev)? prev.filter(inc => inc._id!==id): [])
+      setLast30DaysIncomes(prev => Array.isArray(prev)? prev.filter(inc => inc._id!==id): [])
 
       setOpenDeleteAlert({ show: false, data: null});
       toast.success("Income detail deleted successfully")
       fetchIncomeTransactions();
+      handleLast30DaysIncomes();
     }  catch(error){
       console.error("Failed to add income data:", error);
       toast.error("Fail to add income transaction, retry")
@@ -178,7 +179,11 @@ const Income = () => {
           onClose={()=>setOpenAddIncomeModal(false)}
           title='Add Income'
         >
-          <AddIncomeForm onAddIncome={handleAddIncome}/>
+          <AddIncomeForm 
+            onAddIncome={handleAddIncome}
+            loading={loading}
+            setLoading={setLoading}
+          />
         </Modal>
 
         <Modal
@@ -189,6 +194,8 @@ const Income = () => {
             <DeleteAlert 
               content='Are you sure you want to delete this income transaction detail?'
               onDelete={()=> handleDeleteIncome(openDeleteAlert.data)}
+              loading={loading}
+              setLoading={setLoading}
             />
         </Modal>
       </div>}

@@ -26,10 +26,11 @@ return fractionalPart ? `${formattedInteger}.${fractionalPart}` : formattedInteg
 
 export const prepareExpenseChartData = (data = []) =>{
     if(!Array.isArray(data)) return [];
-    const chartData = data.map((item)=> ({
-        category: item?.category,
+    const sortData = [...data].sort((a,b) => new Date(a.date) - new Date(b.date))
+    const chartData = sortData.map((item)=> ({
+        month: moment(item?.date).format('DD MM'),
         amount: item?.amount,
-        description: item?.description
+        category: item?.category
     }))
 
     return chartData

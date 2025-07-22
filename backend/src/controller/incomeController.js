@@ -41,7 +41,7 @@ export async function getLast30DaysIncome (req, res) {
         )
 
         res.status(200).json({
-            last30DaysIncome: {total: last30DaysIncome, transactions: last30DaysIncomeTransactions},
+            last30DaysIncomes: {total: last30DaysIncome, transactions: last30DaysIncomeTransactions},
         })
     } catch (error) {
         console.log("Error fetching last 30 days income", error);

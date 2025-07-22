@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { prepareExpenseChartData } from '@/lib/helper'
-import CustomBarchart from './CustomBarchart'
+import { prepareExpenseLineChartData } from '@/lib/helper'
+import CustomLinechart from './CustomLinechart'
 
 const Last30DaysExpensesChart = ({ data }) => {
     const [chartData, setChartData] = useState([])
 
     useEffect(()=>{
-        const result = prepareExpenseChartData(data)
+        const result = prepareExpenseLineChartData(data)
         setChartData(result);
 
         return ()=>{}
@@ -14,9 +14,9 @@ const Last30DaysExpensesChart = ({ data }) => {
   return (
     <div className='card'>
         <div className='flex flex-col justify-between'>
-            <h5 className='text-lg'>Last 30 Days Expenses Chart</h5>
+            <h5 className='text-[15px] mb-4'>Last 30 Days Expenses Chart</h5>
 
-            <CustomBarchart data={chartData} />
+            <CustomLinechart data={chartData} />
         </div>
     </div>
   )

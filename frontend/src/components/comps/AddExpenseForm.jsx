@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Label } from '../ui/label';
 import { Input } from '../ui/input';
 
-const AddExpenseForm = ({ onAddExpense }) => {
+const AddExpenseForm = ({ onAddExpense, loading, setLoading }) => {
     const [expense, setExpense] = useState({
           category: "",
           amount: "",
@@ -52,10 +52,15 @@ const AddExpenseForm = ({ onAddExpense }) => {
           <div className="flex justify-end mt-5">
               <button
                   type='button'
+                  disabled={loading}
                   className='add-btn add-btn-fill'
-                  onClick={()=> onAddExpense(expense)}
+                  onClick={()=> {
+                        onAddExpense(expense)
+                        setLoading(true)
+                    }
+                  }
               >
-                  Add Expense
+                  {loading? 'Adding...' : 'Add Expense'}
               </button>
           </div>
       </div>

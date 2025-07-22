@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import CustomBarchart from "./CustomBarchart"
 import { prepareIncomeBarChartData } from "@/lib/helper"
 
-const Last30DaysIncomeChart = ({data}) => {
+const Last30DaysIncomeChart = ({ data }) => {
     const [chartData, setChartData] = useState([])
 
     useEffect(()=>{
@@ -14,7 +14,7 @@ const Last30DaysIncomeChart = ({data}) => {
   return (
     <div className='card'>
         <div className='flex flex-col justify-between'>
-            <h5 className='text-lg'>Last 30 Days Incomes Chart</h5>
+            <h5 className='text-[15px] mb-4'>Last 30 Days Incomes Chart</h5>
 
            <CustomBarchart data={chartData} />
         </div>

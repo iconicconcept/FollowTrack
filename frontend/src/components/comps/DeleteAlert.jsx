@@ -1,6 +1,6 @@
 import React from 'react'
 
-const DeleteAlert = ({ content, onDelete }) => {
+const DeleteAlert = ({ content, onDelete, loading, setLoading }) => {
   return (
     <div>
         <p className='text-sm'>{content}</p>
@@ -8,10 +8,15 @@ const DeleteAlert = ({ content, onDelete }) => {
         <div className='flex justify-end mt-5'>
             <button
              type='button'
+             disabled={loading}
              className='add-btn add-btn-fill'
-             onClick={onDelete}
+             onClick={()=> {
+                        onDelete()
+                        setLoading(true)
+                    }
+                  }
             >
-                Delete
+                {loading? 'Deleting...' : 'Delete'}
             </button>
         </div>
     </div>

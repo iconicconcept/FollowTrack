@@ -20,6 +20,13 @@ const CustomLinechart = ({data}) => {
     };
 
   return (
+    <>
+        {data?.length === 0 && ( 
+          <div className='flex items-center justify-center text-sm text-gray-600 gap-4 mt-10 px-2 rounded-lg'>
+            Add your first Expense Transaction to get started
+          </div> )
+        }
+
     <div className='bg-white mt-1'>
         <ResponsiveContainer width="100%" height={300}>
             <AreaChart data={data}>
@@ -48,6 +55,7 @@ const CustomLinechart = ({data}) => {
             </AreaChart>
         </ResponsiveContainer>
     </div>
+    </>
   )
 }
 

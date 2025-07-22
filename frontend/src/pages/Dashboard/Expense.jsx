@@ -33,7 +33,6 @@ const Expense = () => {
           const response = await axiosInstance.get("/expense/getExpense")
     
           setExpenseData(response.data || []);
-          toast.success("Welcome")
         } catch (error){
           console.error("Failed to fetch expense data:", error);
           toast.error("Fail to fetch expense data, refresh or try again later")
@@ -49,9 +48,7 @@ const Expense = () => {
         try{
           const response = await axiosInstance.get("/expense/last30DaysExpenses")
     
-          if(response.data){
-            setLast30DaysExpenses(response.data.last30DaysExpenses)
-          } 
+          setLast30DaysExpenses(response.data.last30DaysExpenses || [])
         } catch (error){
           console.error("Failed to fetch last 30 days expense data:", error);
           toast.error("Fail to fetch last 30 days expense data, refresh or try again later")
@@ -81,6 +78,7 @@ const Expense = () => {
       return
     }
 
+    setLoading(true)
     try {
       //const date = new Date(date).toISOString().split("T")[0];
 
@@ -103,10 +101,13 @@ const Expense = () => {
   const handleDeleteExpense = async (id) =>{ 
     try{
       await axiosInstance.delete(`/expense/${id}`)
+      setExpenseData(prev => Array.isArray(prev)? prev.filter(inc => inc._id!==id): [])
+      setLast30DaysExpenses(prev => Array.isArray(prev)? prev.filter(inc => inc._id!==id): [])
 
       setOpenDeleteAlert({ show: false, data: null});
       toast.success("Expense detail deleted successfully")
       fetchExpenseTransactions();
+      handleLast30DaysExpenses();
     }  catch(error){
       console.error("Failed to delete Expense data:", error);
       toast.error("Fail to delete Expense transaction, retry")
@@ -181,7 +182,11 @@ const Expense = () => {
           onClose={()=>setOpenAddExpenseModal(false)}
           title='Add Expense'
         >
-          <AddExpenseForm onAddExpense={handleAddExpense}/>
+          <AddExpenseForm 
+            onAddExpense={handleAddExpense}
+            loading={loading}
+            setLoading={setLoading}
+          />
         </Modal>
 
         <Modal
@@ -192,6 +197,8 @@ const Expense = () => {
             <DeleteAlert 
               content='Are you sure you want to delete this Expense transaction detail?'
               onDelete={()=> handleDeleteExpense(openDeleteAlert.data)}
+              loading={loading}
+              setLoading={setLoading}
             />
           </Modal>
       </div>}

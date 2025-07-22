@@ -116,7 +116,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4 py-2">
+    <div className="max-content md:min-h-screen lg:min-h-screen bg-background flex items-center justify-center px-4 py-2">
       <div className="w-full max-w-md">
         <Card className="shadow-2xl border-border animate-fade-in">
           <CardContent className="px-8 py-5">

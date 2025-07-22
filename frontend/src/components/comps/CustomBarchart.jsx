@@ -24,6 +24,12 @@ const CustomBarchart = ({ data }) => {
     };
 
   return (
+    <>
+        {data?.length === 0 && ( 
+          <div className='flex items-center justify-center text-sm text-gray-600 gap-4 mt-10 px-2 rounded-lg'>
+            Add your first Income Transaction to get started
+          </div> )
+        }
     <div className='bg-white mt-5'>
         <ResponsiveContainer width="100%" height={300}>
             <BarChart data={data}>
@@ -48,6 +54,7 @@ const CustomBarchart = ({ data }) => {
             </BarChart>
         </ResponsiveContainer>
     </div>
+    </>
   )
 }
 

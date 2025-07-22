@@ -11,7 +11,7 @@ const TransactionOverview = ({totalBalance, totalExpenses, totalIncome}) => {
     ]
   return (
     <div className='card'>
-        <div className='flex items-center justify-between'>
+        <div className='flex items-center justify-between mb-3'>
             <h5 className='text-lg'>Financial Overview</h5>
         </div>
 
