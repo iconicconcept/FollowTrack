@@ -15,14 +15,14 @@ const app = express();
 const PORT = process.env.PORT || 8000
 const __dirname = path.resolve();
 
-//if(process.env.NODE_ENV !== "production"){
+if(process.env.NODE_ENV !== "production"){
     app.use(cors({
         origin: "http://localhost:5173",
         methods: "GET,POST,PUT,DELETE,PATCH,OPTIONS",
         allowedHeaders: "Content-Type, Authorization",
         credentials: true,
     }));
-//}
+}
 
 
 app.use(express.json());
@@ -33,12 +33,12 @@ app.use("/api/income", authMiddleware, incomeRoute)
 app.use("/api/expense", authMiddleware, expenseRoute)
 app.use("/api/dashboard", authMiddleware, dashRoute)
 
-// if(process.env.NODE_ENV === "production"){
-//     app.use(express.static(path.join(__dirname, "../client/dist")));
-//     app.get("files{/*path}",(req, res)=>{
-//         res.sendFile(path.join(__dirname,"../client","dist","index.html"))
-//     });
-// };
+if(process.env.NODE_ENV === "production"){
+    app.use(express.static(path.join(__dirname, "../client/dist")));
+    app.get("files{/*path}",(req, res)=>{
+        res.sendFile(path.join(__dirname,"../client","dist","index.html"))
+    });
+};
 
 app.use("/uploads", express.static(path.join(__dirname, "uploads")))
 

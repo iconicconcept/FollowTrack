@@ -9,7 +9,7 @@ const DashboardLayout = ({ children, activeMenu })=>{
         <div className="">
             <Navbar activeMenu={activeMenu} />
 
-            <div className="mt-16"> {/* This wrapper pushes the entire content area down */}
+            <div className="mt-16 mx-auto max-w-[1300px] min-h-screen bg-background"> {/* This wrapper pushes the entire content area down */}
                 {user && (
                     <div className="flex">
                         <div className="max-[1000px]:hidden">
