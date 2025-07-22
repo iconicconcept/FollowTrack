@@ -16,7 +16,7 @@ const Navbar = ({ activeMenu }) => {
 
   return (
     <>
-    <div className='bg-background border border-b backdrop-blur-[2px] border-gray-300/50 px-7 fixed w-full py-4 flex justify-between items-center top-0 z-99 '>
+    <div className='bg-background border border-b backdrop-blur-[2px] border-gray-300/50 px-3 md:px-7 lg:px-7 fixed w-full py-4 flex justify-between items-center top-0 z-99 '>
 
       <div className='flex items-center justify-between w-full max-w-[1250px] mx-auto'>
         {/* Name and toggle */}
@@ -36,7 +36,7 @@ const Navbar = ({ activeMenu }) => {
         </div>
 
         {/* button to income and expense */}
-        {location.pathname==='/dashboard' && <button className='nav-btn add-btn-fill px-2 md:px-4'
+        {location.pathname==='/dashboard' && <button className='nav-btn add-btn-fill px-1 md:px-4'
           onClick={()=> setOpenTransactionModal(true)}
         >
           Add Transaction
