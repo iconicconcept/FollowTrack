@@ -22,7 +22,7 @@ const CustomLinechart = ({data}) => {
   return (
     <>
         {data?.length === 0 && ( 
-          <div className='flex items-center justify-center text-sm text-gray-600 gap-4 mt-10 px-2 rounded-lg'>
+          <div className='flex items-center justify-center text-sm text-gray-600 gap-4 mt-13 px-2 rounded-lg'>
             Add your first Expense Transaction to get started
           </div> )
         }
